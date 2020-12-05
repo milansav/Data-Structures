@@ -3,19 +3,22 @@
 
 #include  <utility>
 
-struct Tree
-{
-    Tree();
-    std::pair<Node*, Node*> nodes;
-    void addNode(Node n);
-};
-
 struct Node
 {
+public:
     Node();
     std::pair<Node*, Node*> nodes;
     void addNode(Node n);
-    int getDepth();
+    std::pair<int, int> getDepth(int currDepth); //Return min and max depth
+};
+
+struct Tree
+{
+public:
+    Tree();
+    std::pair<Node*, Node*> nodes;
+    void addNode(Node n);
+    std::pair<int, int> getDepth();
 };
 
 #endif
