@@ -1,8 +1,9 @@
 #include "tree.h"
+#include <iostream>
 
 std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> bDepths)
 {
-    
+    //Find min and max depths
     int minA = 0, minB = 0, maxA = 0, maxB = 0;
 
     if(aDepths.first > aDepths.second)
@@ -36,6 +37,9 @@ std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> b
 
 std::pair<int, int> Node::getDepth(int currentDepth)
 {
+
+    std::cout << currentDepth << std::endl;
+
     std::pair<int, int> aDepths;
     std::pair<int, int> bDepths;
 
@@ -55,11 +59,32 @@ std::pair<int, int> Tree::getDepth()
     std::pair<int, int> aDepths;
     std::pair<int, int> bDepths;
 
-    if(this->nodes.first == nullptr && this->nodes.second == nullptr)
+    if(this->nodes.first == nullptr && this->nodes.second == nullptr) //If root has no child nodes return 0 0
         return std::pair<int, int>{0,0};
     
-    if(this->nodes.first == nullptr) aDepths = this->nodes.first->getDepth(1); //Call recursively into the left node
-    if(this->nodes.second == nullptr) bDepths = this->nodes.second->getDepth(1); //Call recursively into the right node
+    if(this->nodes.first != nullptr) aDepths = this->nodes.first->getDepth(1); //Call recursively into the left node
+    if(this->nodes.second != nullptr) bDepths = this->nodes.second->getDepth(1); //Call recursively into the right node
 
     return getMinMax(aDepths, bDepths);
+}
+
+void Tree::addNode(Node& n)
+{
+
+    std::cout << "Added node to tree root" << std::endl;
+
+    if(this->nodes.first == nullptr) this->nodes.first = &n;
+    else
+    if(this->nodes.second == nullptr) this->nodes.second = &n;
+}
+
+void Node::addNode(Node& n)
+{    
+
+    std::cout << "Added node" << std::endl;
+
+    if(this->nodes.first == nullptr) this->nodes.first = &n;
+    else
+    if(this->nodes.second == nullptr) this->nodes.second = &n;
+
 }
