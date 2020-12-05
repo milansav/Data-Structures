@@ -7,6 +7,8 @@ std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> b
 
 struct Node
 {
+    bool firstNull;
+    bool secondNull;
     std::pair<Node*, Node*> nodes;
     void addNode(Node& n);
     std::pair<int, int> getDepth(int currDepth); //Return min and max depth
@@ -14,6 +16,8 @@ struct Node
 
 struct Tree
 {
+    bool firstNull;
+    bool secondNull;
     std::pair<Node*, Node*> nodes;
     void addNode(Node& n);
     std::pair<int, int> getDepth();

@@ -38,17 +38,20 @@ std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> b
 std::pair<int, int> Node::getDepth(int currentDepth)
 {
 
+    bool firstNull = this->nodes.first == nullptr;
+    bool secondNull = this->nodes.second == nullptr;
+
     std::cout << currentDepth << std::endl;
 
     std::pair<int, int> aDepths;
     std::pair<int, int> bDepths;
 
-    if(this->nodes.first == nullptr && this->nodes.second == nullptr) //If there are no other child nodes return currentDepth 
+    if( firstNull && secondNull ) //If there are no other child nodes return currentDepth 
         return std::pair<int, int>{currentDepth, currentDepth};
 
-    if(this->nodes.first != nullptr) aDepths = this->nodes.first->getDepth(currentDepth+1); //Call recursively into the left node, each time increasing the depth
+    if(!firstNull) aDepths = this->nodes.first->getDepth(currentDepth+1); //Call recursively into the left node, each time increasing the depth
     else aDepths = std::make_pair(currentDepth, currentDepth);
-    if(this->nodes.second != nullptr) bDepths = this->nodes.second->getDepth(currentDepth+1); //Call recursively into the right node, each time increasing the depth
+    if(!secondNull) bDepths = this->nodes.second->getDepth(currentDepth+1); //Call recursively into the right node, each time increasing the depth
     else bDepths = std::make_pair(currentDepth, currentDepth);
     
     return getMinMax(aDepths, bDepths);
@@ -56,14 +59,18 @@ std::pair<int, int> Node::getDepth(int currentDepth)
 
 std::pair<int, int> Tree::getDepth()
 {
+
+    bool firstNull = this->nodes.first == nullptr;
+    bool secondNull = this->nodes.second == nullptr;
+
     std::pair<int, int> aDepths;
     std::pair<int, int> bDepths;
 
-    if(this->nodes.first == nullptr && this->nodes.second == nullptr) //If root has no child nodes return 0 0
+    if(firstNull && secondNull) //If root has no child nodes return 0 0
         return std::pair<int, int>{0,0};
     
-    if(this->nodes.first != nullptr) aDepths = this->nodes.first->getDepth(1); //Call recursively into the left node
-    if(this->nodes.second != nullptr) bDepths = this->nodes.second->getDepth(1); //Call recursively into the right node
+    if(!firstNull) aDepths = this->nodes.first->getDepth(1); //Call recursively into the left node
+    if(!secondNull) bDepths = this->nodes.second->getDepth(1); //Call recursively into the right node
 
     return getMinMax(aDepths, bDepths);
 }
