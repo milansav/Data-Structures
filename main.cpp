@@ -10,7 +10,7 @@ int main()
     Node n;
 
     tree.addNode(n);
-
+/*
     Node n2;
     n.addNode(n2);
 
@@ -20,7 +20,7 @@ int main()
     n2.addNode(n3);
 
     tree.addNode(n3);
-
+*/
     std::pair<int, int> depths = tree.getDepth();
 
     //std::cout << tree.getDepth();
