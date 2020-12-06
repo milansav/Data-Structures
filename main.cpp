@@ -19,6 +19,8 @@ int main()
 
     n2.addNode(n3);
 
+    tree.addNode(n3);
+
     std::pair<int, int> depths = tree.getDepth();
 
     //std::cout << tree.getDepth();

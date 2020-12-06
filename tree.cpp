@@ -78,20 +78,34 @@ std::pair<int, int> Tree::getDepth()
 void Tree::addNode(Node& n)
 {
 
-    std::cout << "Added node to tree root" << std::endl;
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes;
 
     if(this->nodes.first == nullptr) this->nodes.first = &n;
-    else
+    else emptyNodes.first = this->nodes.first->findEmptyNode(0);
+
     if(this->nodes.second == nullptr) this->nodes.second = &n;
+    else emptyNodes.second = this->nodes.second->findEmptyNode(0);
+
+    //Assign the node to the closes one
+    if(emptyNodes.first.first > emptyNodes.second.first)
+        emptyNodes.first.second = &n;
+    else emptyNodes.second.second = &n;
 }
 
-void Node::addNode(Node& n)
-{    
+std::pair<int, Node*> Node::findEmptyNode(int currentDepth)
+{
 
-    std::cout << "Added node" << std::endl;
+    bool firstNull = this->nodes.first == nullptr;
+    bool secondNull = this->nodes.second == nullptr;
+    
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> nodes;
 
-    if(this->nodes.first == nullptr) this->nodes.first = &n;
-    else
-    if(this->nodes.second == nullptr) this->nodes.second = &n;
+    if(!firstNull) nodes.first = findEmptyNode(currentDepth+1); //Find recursively empty node on the left side
+    else nodes.first = std::make_pair(currentDepth, this->nodes.first);
 
+    if(!secondNull) nodes.second = findEmptyNode(currentDepth+1); //Find recursively empty node on the right side
+    else nodes.second = std::make_pair(currentDepth, this->nodes.second);
+
+    //Find the closest one to the root
+    //TBD
 }

@@ -7,17 +7,14 @@ std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> b
 
 struct Node
 {
-    bool firstNull;
-    bool secondNull;
+    int depth;
     std::pair<Node*, Node*> nodes;
-    void addNode(Node& n);
     std::pair<int, int> getDepth(int currDepth); //Return min and max depth
+    std::pair<int, Node*> findEmptyNode(int currentDepth);
 };
 
 struct Tree
 {
-    bool firstNull;
-    bool secondNull;
     std::pair<Node*, Node*> nodes;
     void addNode(Node& n);
     std::pair<int, int> getDepth();
