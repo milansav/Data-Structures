@@ -1,6 +1,7 @@
 #include "tree.h"
 #include <iostream>
 
+
 std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> bDepths)
 {
     //Find min and max depths
@@ -78,7 +79,7 @@ std::pair<int, int> Tree::getDepth()
 void Tree::addNode(Node& n)
 {
 
-    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes;
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes {{0, nullptr}, {0, nullptr}};
 
     if(this->nodes.first == nullptr) this->nodes.first = &n;
     else emptyNodes.first = this->nodes.first->findEmptyNode(0);
@@ -86,26 +87,43 @@ void Tree::addNode(Node& n)
     if(this->nodes.second == nullptr) this->nodes.second = &n;
     else emptyNodes.second = this->nodes.second->findEmptyNode(0);
 
-    //Assign the node to the closes one
+    //Because we know neither of them can't be not nullptr choose the closest one
     if(emptyNodes.first.first > emptyNodes.second.first)
         emptyNodes.first.second = &n;
     else emptyNodes.second.second = &n;
 }
 
-std::pair<int, Node*> Node::findEmptyNode(int currentDepth)
+std::pair<int, Node*> Node::findEmptyNode(int currentDepth) //std::pair<depth, NodePointer>
 {
-
     bool firstNull = this->nodes.first == nullptr;
     bool secondNull = this->nodes.second == nullptr;
-    
-    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> nodes;
 
-    if(!firstNull) nodes.first = findEmptyNode(currentDepth+1); //Find recursively empty node on the left side
-    else nodes.first = std::make_pair(currentDepth, this->nodes.first);
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes {{currentDepth, nullptr}, {currentDepth, nullptr}};
 
-    if(!secondNull) nodes.second = findEmptyNode(currentDepth+1); //Find recursively empty node on the right side
-    else nodes.second = std::make_pair(currentDepth, this->nodes.second);
+    if(firstNull)
+    { 
+        emptyNodes.first.first = currentDepth;
+        *emptyNodes.first.second = *this->nodes.first;
+    } //If its not empty, look into child
+    else emptyNodes.first = this->nodes.first->findEmptyNode(currentDepth+1);
 
-    //Find the closest one to the root
-    //TBD
+
+    if(secondNull)
+    {
+        emptyNodes.second.first = currentDepth;
+        *emptyNodes.second.second = *this->nodes.second;
+    } //If its not empty, look into child
+    else emptyNodes.second = this->nodes.second->findEmptyNode(currentDepth+1);
+
+    //Return the closest one
+    if(emptyNodes.first.first > emptyNodes.second.first) //Right is closer than left
+    {
+        if(emptyNodes.second.second == nullptr) return emptyNodes.second; //If second is nullptr return it
+        return emptyNodes.first; //If no return first
+    } else //Left is closer or the same distance from root, either way return left
+    {
+        if(emptyNodes.first.second == nullptr) return emptyNodes.first; //Same
+        return emptyNodes.second;
+    }
+
 }

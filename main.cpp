@@ -9,18 +9,16 @@ int main()
     std::cout << "Created empty node" << std::endl;
     Node n;
 
-    tree.addNode(n);
-/*
+    tree.addNode(n); //RN throws seg fault
+
     Node n2;
-    n.addNode(n2);
-
     Node n3;
-    n.addNode(n3);
+    Node n4;
 
-    n2.addNode(n3);
-
+    tree.addNode(n2); //These tree also throw seg fault rn
     tree.addNode(n3);
-*/
+    tree.addNode(n4);
+
     std::pair<int, int> depths = tree.getDepth();
 
     //std::cout << tree.getDepth();
