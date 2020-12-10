@@ -1,6 +1,11 @@
 #include "tree.h"
 #include <iostream>
+#include <vector>
 
+Node::Node()
+{
+    this->nodes.first = this->nodes.second = nullptr;
+}
 
 std::pair<int, int> getMinMax(std::pair<int, int> aDepths, std::pair<int, int> bDepths)
 {
@@ -79,7 +84,11 @@ std::pair<int, int> Tree::getDepth()
 void Tree::addNode(Node& n)
 {
 
-    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes {{0, nullptr}, {0, nullptr}};
+
+    bool firstNull = this->nodes.first == nullptr;
+    bool secondNull = this->nodes.second == nullptr;
+
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes;
 
     if(this->nodes.first == nullptr) this->nodes.first = &n;
     else emptyNodes.first = this->nodes.first->findEmptyNode(0);
@@ -93,37 +102,31 @@ void Tree::addNode(Node& n)
     else emptyNodes.second.second = &n;
 }
 
-std::pair<int, Node*> Node::findEmptyNode(int currentDepth) //std::pair<depth, NodePointer>
+std::pair<int, Node*> Node::findEmptyNode(int currentDepth)
 {
     bool firstNull = this->nodes.first == nullptr;
     bool secondNull = this->nodes.second == nullptr;
 
-    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes {{currentDepth, nullptr}, {currentDepth, nullptr}};
+    std::cout << "Finding null node" << std::endl;
+
+    std::pair<std::pair<int, Node*>, std::pair<int, Node*>> emptyNodes;
 
     if(firstNull)
-    { 
-        emptyNodes.first.first = currentDepth;
-        *emptyNodes.first.second = *this->nodes.first;
-    } //If its not empty, look into child
-    else emptyNodes.first = this->nodes.first->findEmptyNode(currentDepth+1);
-
+    {
+        return std::pair<int, Node*>{currentDepth, this->nodes.first};
+    } else emptyNodes.first = this->nodes.first->findEmptyNode(currentDepth+1);
 
     if(secondNull)
     {
-        emptyNodes.second.first = currentDepth;
-        *emptyNodes.second.second = *this->nodes.second;
-    } //If its not empty, look into child
-    else emptyNodes.second = this->nodes.second->findEmptyNode(currentDepth+1);
+        return std::pair<int, Node*>{currentDepth, this->nodes.second};
+    } else emptyNodes.second = this->nodes.second->findEmptyNode(currentDepth+1);
 
-    //Return the closest one
-    if(emptyNodes.first.first > emptyNodes.second.first) //Right is closer than left
+    if(emptyNodes.first.first < emptyNodes.second.first)
     {
-        if(emptyNodes.second.second == nullptr) return emptyNodes.second; //If second is nullptr return it
-        return emptyNodes.first; //If no return first
-    } else //Left is closer or the same distance from root, either way return left
+        return std::pair<int, Node*>{emptyNodes.second.first, emptyNodes.second.second};
+    
+    } else
     {
-        if(emptyNodes.first.second == nullptr) return emptyNodes.first; //Same
-        return emptyNodes.second;
-    }
-
+        return std::pair<int, Node*>{emptyNodes.first.first, emptyNodes.first.second};
+    }       
 }
