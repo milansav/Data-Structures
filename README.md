@@ -1,5 +1,6 @@
 # Binary-Tree-Visualisation
-App for displaying binary trees, and other functions with binary trees
+App for displaying data structures and other functions with them
 
 # TO-DO:
--Automatically adding nodes into tree
+<b>Sorted Binary Tree</b><br>
+  -Automatically adding nodes into tree
