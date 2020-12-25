@@ -1,12 +1,19 @@
 #ifndef LIST_H
 #define LIST_H
 
+struct Node
+{
+    Node *next {nullptr};
+    Node();
+    void push(Node &node);
+    void pop();
+};
+
 struct List
 {
-    List::List *head;
-    List::List *next;
+    Node *head;
     List();
-    void push(List &list);
+    void push(Node &node);
     void pop();
 };
 
